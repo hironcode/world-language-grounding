@@ -1,0 +1,12 @@
+{
+    "training":
+    {
+        "env_name": "VizdoomBasic-v0",
+        "image_shape": [64, 64],
+        "trainnig_timesteps": 100000,
+        "n_steps": 128,
+        "n_envs": 8,
+        "frame_skip": 4,
+        "ray_iterations": 1000
+    }
+}

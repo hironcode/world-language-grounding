@@ -1,9 +1,10 @@
-# this code is the implementaiton of a blog.
+# ObservationWrapper, wrap_env, and reward_wrap_env are the implementation of a blog below 
 # Reference: https://medium.com/@kaige.yang0110/ray-rllib-how-to-train-dreamerv3-on-vizdoom-and-atari-122c8bd1170b
 
 import gym
 import cv2
 import numpy as np
+import json
 
 IMAGE_SHAPE = (64, 64)
 FRAME_SKIP = 4
@@ -46,11 +47,16 @@ class ObservationWrapper(gym.ObservationWrapper):
         # print('obs.shape', observation.shape)
         return observation
 
-def wrap_env(env):
-    env = ObservationWrapper(env)
+def wrap_env(env, config):
+    env = ObservationWrapper(env, shape=config['image_shape'], frame_skip=config['frame_skip'])
     env = gym.wrappers.TransformReward(env, lambda r: r * 0.01)
     return env
 
 def reward_wrap_env(env):
     env = gym.wrappers.TransformReward(env, lambda r: r * 0.01)
     return env
+
+def load_config(config_path):
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    return config
