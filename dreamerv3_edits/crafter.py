@@ -113,8 +113,9 @@ class Crafter(embodied.Env):
         'pos': info['player_pos'].tolist(),
         'image': image.tolist(),
     }
+    file_num = step // 100
 
-    filename = self._logdir / 'stats.jsonl'
+    filename = self._logdir / f'stats{file_num}.jsonl'
     lines = filename.read() if filename.exists() else ''
     lines += json.dumps(stats) + '\n'
     filename.write(lines, mode='w')
