@@ -7,6 +7,7 @@ dynalang
 shell
 test.py
 probing/models/checkpoint_test.pkl
+probing/models/checkpoint_test.pkl.zip
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
