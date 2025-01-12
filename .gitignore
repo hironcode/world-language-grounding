@@ -6,6 +6,7 @@ dreamerv3
 dynalang
 shell
 test.py
+probing/models/checkpoint_test.pkl
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

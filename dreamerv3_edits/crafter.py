@@ -113,7 +113,7 @@ class Crafter(embodied.Env):
         'pos': info['player_pos'].tolist(),
         'image': image.tolist(),
     }
-    file_num = step // 100
+    file_num = step // 10000
 
     filename = self._logdir / f'stats{file_num}.jsonl'
     lines = filename.read() if filename.exists() else ''
