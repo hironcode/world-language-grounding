@@ -21,9 +21,9 @@ import optax
 
 # editted
 try:
-  from . import rssm_prob as rssm
+  from . import rssm_probe as rssm
 except:
-  from models import rssm_prob as rssm
+  from probing.models import rssm_probe as rssm
 
 f32 = jnp.float32
 i32 = jnp.int32
@@ -148,11 +148,13 @@ class Agent(embodied.jax.Agent):
     activations['dynamic'] = feat
     
     dec_entry = {}
+    # editted
     if dec_carry:
       dec_carry, dec_entry, recons = self.dec(dec_carry, feat, reset, **kw)
-    
-    # editted
-    activations['decoder'] = recons['x']
+      # editted
+      activations['decoder'] = recons['x']
+    else:
+      activations['decoder'] = np.array([])
 
     # actor: linear transformation of RSSM feature into action space distribution
     policy = self.pol(self.feat2tensor(feat), bdims=1)
