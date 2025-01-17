@@ -10,9 +10,10 @@ def pairwise_distance(true, predicted):
     dlat = true[:, None, 0] - predicted[None, :, 0]
     dlon = true[:, None, 1] - predicted[None, :, 1]
 
-    return np.sqrt(dlat**2 + dlon**2)
+    return np.sqrt(dlat**2 + dlon**2).numpy()
 
 def pairwise_abs_distance_fn(true_values, predicted_values):
+    true_values = true_values.ravel()
     return np.abs(true_values[:, np.newaxis] - predicted_values[:, np.newaxis].T)
 
 def compute_proximity_error_matrix(true_values, predicted_values, is_place):
@@ -67,6 +68,7 @@ def score_place_probe(target, pred):
     return score_dict
 
 def score_time_probe(target, pred):
+    target = target.ravel()
     pearson = stats.pearsonr(target, pred)
     spearman = stats.spearmanr(target, pred)
     kendall = stats.kendalltau(target, pred)
