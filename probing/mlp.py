@@ -28,6 +28,7 @@ class MLPRegressor(BaseEstimator, RegressorMixin):
         self.validation_scores = []
 
     def fit(self, X, y, batch_size=512):
+        X = torch.from_numpy(X)
         X_train, X_val, y_train, y_val = train_test_split(
             X, y, test_size=0.1, random_state=42)
 
@@ -83,6 +84,7 @@ class MLPRegressor(BaseEstimator, RegressorMixin):
         return self
 
     def predict(self, X):
+        X = torch.from_numpy(X)
         X = X.float().to(self.device)
         with torch.no_grad():
             outputs = self.model(X)
