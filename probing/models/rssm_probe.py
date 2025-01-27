@@ -272,6 +272,7 @@ class Decoder(nj.Module):
 
   def __init__(self, obs_space, **kw):
     assert all(len(s.shape) <= 3 for s in obs_space.values()), obs_space
+    super().__init__()
     self.obs_space = obs_space
     self.veckeys = [k for k, s in obs_space.items() if len(s.shape) <= 2]
     self.imgkeys = [k for k, s in obs_space.items() if len(s.shape) == 3]
@@ -370,3 +371,7 @@ class Decoder(nj.Module):
 
     entries = {}
     return carry, entries, recons
+
+if __name__ == "main":
+  dec = Decoder(obs_space=dict(x=(64, 64, 3)))
+  print(dec.path)

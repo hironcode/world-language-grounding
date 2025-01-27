@@ -22,8 +22,10 @@ import optax
 # editted
 try:
   from . import rssm_probe as rssm
+  from . import embodied_jax_agent_probe
 except:
   from probing.models import rssm_probe as rssm
+  from probing.models import embodied_jax_agent_probe
 
 f32 = jnp.float32
 i32 = jnp.int32
@@ -34,7 +36,8 @@ concat = lambda xs, a: jax.tree.map(lambda *x: jnp.concatenate(x, a), *xs)
 isimage = lambda s: s.dtype == np.uint8 and len(s.shape) == 3
 
 
-class Agent(embodied.jax.Agent):
+# class Agent(embodied.jax.Agent):
+class Agent(embodied_jax_agent_probe.Agent):
 
   banner = [
       r"---  ___                           __   ______ ---",
