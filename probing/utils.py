@@ -32,4 +32,6 @@ def copy_dataset(logdir, targetdir):
     
 
 if __name__== "__main__":
-    copy_dataset("/workspace/assets/logdir/crafter/20250111T122207", "/workspace/assets/probing/dataset/crafter")
+    logdir = "/workspace/assets/logdir/crafter/20250111T122207"
+    path_to_save = "/workspace/assets/probing/dataset/crafter"
+    copy_dataset(logdir, path_to_save)
