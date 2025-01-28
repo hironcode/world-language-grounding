@@ -15,6 +15,7 @@ import crafter
 import elements
 import embodied
 import numpy as np
+import pickle
 
 
 class Crafter(embodied.Env):
@@ -30,7 +31,17 @@ class Crafter(embodied.Env):
     self._reward = None
     self._achievements = crafter.constants.achievements.copy()
     self._done = True
-    self._total_step = 0
+
+    # editted
+    # this code presuposes that in config.yaml, env/crafter/use_logdir is set True.
+    # otherwise this env class cannot get logdir path
+    if logdir:
+      with open(self._logdir.parent/"ckpt/latest", "r") as f:
+        latest = f.read()
+      logdir_step = self._logdir.parent/"ckpt"/latest/"step.pkl"
+      self._total_step = pickle.load(logdir_step)
+    else:
+      self._total_step = 0
 
   @property
   def obs_space(self):

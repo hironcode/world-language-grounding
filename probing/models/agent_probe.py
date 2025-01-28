@@ -22,8 +22,10 @@ import optax
 # editted
 try:
   from . import rssm_probe as rssm
+  from . import embodied_jax_agent_probe
 except:
   from probing.models import rssm_probe as rssm
+  from probing.models import embodied_jax_agent_probe
 
 f32 = jnp.float32
 i32 = jnp.int32
@@ -34,7 +36,8 @@ concat = lambda xs, a: jax.tree.map(lambda *x: jnp.concatenate(x, a), *xs)
 isimage = lambda s: s.dtype == np.uint8 and len(s.shape) == 3
 
 
-class Agent(embodied.jax.Agent):
+# class Agent(embodied.jax.Agent):
+class Agent(embodied_jax_agent_probe.Agent):
 
   banner = [
       r"---  ___                           __   ______ ---",
@@ -133,45 +136,46 @@ class Agent(embodied.jax.Agent):
     reset = obs['is_first']
 
     # editted
-    activations = {}
+    # activations = {}
     
     # what is tokens?
     enc_carry, enc_entry, tokens = self.enc(enc_carry, obs, reset, **kw)
     
     # editted
-    activations['encoder'] = tokens
+    # activations['encoder'] = tokens
 
     dyn_carry, dyn_entry, feat = self.dyn.observe(
         dyn_carry, tokens, prevact, reset, **kw)
     
     # editted
-    activations['dynamic'] = feat
+    # activations['dynamic'] = feat
     
     dec_entry = {}
-    # editted
     if dec_carry:
       dec_carry, dec_entry, recons = self.dec(dec_carry, feat, reset, **kw)
       # editted
-      activations['decoder'] = recons['x']
-    else:
-      activations['decoder'] = np.array([])
+    #activations['decoder'] = np.array([])
 
     # actor: linear transformation of RSSM feature into action space distribution
     policy = self.pol(self.feat2tensor(feat), bdims=1)
     act = sample(policy)
 
     # editted
-    activations['policy'] = policy
+    # activations['policy'] = policy
 
     out = {}
     out['finite'] = elements.tree.flatdict(jax.tree.map(
         lambda x: jnp.isfinite(x).all(range(1, x.ndim)),
         dict(obs=obs, carry=carry, tokens=tokens, feat=feat, act=act)))
+    
+    out['infinite']
+
     carry = (enc_carry, dyn_carry, dec_carry, act)
     if self.config.replay_context:
       out.update(elements.tree.flatdict(dict(
           enc=enc_entry, dyn=dyn_entry, dec=dec_entry)))
-    return carry, act, out, activations
+    return carry, act, out
+
 
   def train(self, carry, data):
     carry, obs, prevact, stepid = self._apply_replay_context(carry, data)

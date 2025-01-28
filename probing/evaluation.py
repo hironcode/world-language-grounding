@@ -24,6 +24,7 @@ def compute_proximity_error_matrix(true_values, predicted_values, is_place):
         dist_matrix = pairwise_distance(true_values, predicted_values)
     else:
         dist_matrix = pairwise_abs_distance_fn(true_values, predicted_values)
+    # 少なくとも二、三次元じゃないといけない
     target_diff = np.diag(dist_matrix)
     error_matrix = dist_matrix < target_diff[:, np.newaxis]
     return error_matrix
